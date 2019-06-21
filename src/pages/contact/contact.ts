@@ -1,3 +1,4 @@
+
 import { ContactProvider } from './../../providers/contact/contact';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
@@ -24,8 +25,23 @@ export class ContactPage {
     private toast: ToastController ) {
 
       //maneira 1
-      this.contact = this.navParams.data.contact || {};
-      this.createForm();
+      // this.contact = this.navParams.data.contact || {};
+      // this.createForm();
+
+      // maneira 2
+      this.contact = {};
+        this.createForm();
+
+      if(this.navParams.data.key){
+        const subscribe = this.provider.get(this.navParams.data.key)
+        .subscribe((c: any) =>{
+          subscribe.unsubscribe();
+
+          this.contact = c;
+          this.createForm();
+        })
+
+      };
 
       this.setupPageTitle();
   }
@@ -47,6 +63,7 @@ export class ContactPage {
       this.provider.save(this.form.value)
       .then(()=> {
         this.toast.create({ message: 'Contato salvo com sucesso.', duration: 3000}).present();
+        //this.navCtrl.push('HomePage');
       })
       .catch((e) => {
         this.toast.create({ message: 'Erro ao salvar contato.', duration: 3000}).present();

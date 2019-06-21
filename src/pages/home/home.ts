@@ -22,7 +22,10 @@ export class HomePage {
 
   editContact(contact: any) {
     // maneira 1
-    this.navCtrl.push('ContactPage', {contact: contact});
+    //this.navCtrl.push('ContactPage', {contact: contact});
+
+    // Maneira 2
+    this.navCtrl.push('ContactPage', {key: contact.key});
   }
 
   removeContact(key: string){
